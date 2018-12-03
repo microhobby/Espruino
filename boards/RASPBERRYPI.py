@@ -31,7 +31,7 @@ info = {
    ],
    'makefile' : [
      'LINUX=1',
-     'DEFINES += -DRASPBERRYPI',
+     'DEFINES += -DRASPBERRYPI -DUSE_WIRINGPI',
    ]
  }
 };
