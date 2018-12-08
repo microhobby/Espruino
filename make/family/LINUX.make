@@ -15,7 +15,10 @@ ifeq ($(BOARD),RASPBERRYPI)
   $(info *********************************)
   $(info *         CROSS COMPILING       *)
   $(info *********************************)
-  export CCPREFIX=targetlibs/raspberrypi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-
+  export CCPREFIX=arm-linux-gnueabihf-
+  # no cross compile with wiringpi
+  DEFINETMP = $(DEFINES)
+  DEFINES := $(filter-out -DUSE_WIRINGPI, $(DEFINETMP))
  else
   $(info *********************************)
   $(info *         COMPILING ON PI       *)
