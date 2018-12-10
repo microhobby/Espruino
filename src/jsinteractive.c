@@ -828,9 +828,12 @@ void jsiSemiInit(bool autoLoad) {
           "|____|___|  _|_| |___|_|_|_|___|\n"
           "         |_| espruino.com\n"
           " "JS_VERSION" (c) 2018 G.Williams\n"
+#ifdef HIFIVE1
+	 " HIFIVE1 BOARD PORT (C) 2018 Matheus Castello\n"
+#endif
         // Point out about donations - but don't bug people
         // who bought boards that helped Espruino
-#if !defined(PICO) && !defined(ESPRUINOBOARD) && !defined(ESPRUINOWIFI) && !defined(PUCKJS) && !defined(PIXLJS)
+#if !defined(PICO) && !defined(ESPRUINOBOARD) && !defined(ESPRUINOWIFI) && !defined(PUCKJS) && !defined(PIXLJS) && !defined(HIFIVE1)
           "\n"
           "Espruino is Open Source. Our work is supported\n"
           "only by sales of official boards and donations:\n"

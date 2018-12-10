@@ -222,6 +222,8 @@ elif board.chip["family"]=="ESP32":
 elif board.chip["family"]=="SAMD":
   board.chip["class"]="SAMD"
   codeOut('#include "targetlibs/samd/include/due_sam3x.init.h"')
+elif board.chip["family"]=="RISCV":
+	board.chip["class"]="RISCV"
 else:
   die('Unknown chip family '+board.chip["family"])
 

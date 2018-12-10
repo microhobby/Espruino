@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2013 Gordon Williams <gw@pur3.co.uk>
 # Copyright (C) 2014 Alain Sézille for NucleoF401RE, NucleoF411RE specific lines of this file
+# Copyright (C) 2018 Matheus Castello <matheus@castello.eng.br> for Raspruino, Hifive1 specific lines of this file
 #
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -57,7 +58,7 @@ GENDIR=gen
 endif
 
 ifndef SINGLETHREAD
-MAKEFLAGS=-j5 # multicore
+MAKEFLAGS=-j8 # multicore
 endif
 
 INCLUDE?=-I$(ROOT) -I$(ROOT)/targets -I$(ROOT)/src -I$(GENDIR)
@@ -701,7 +702,7 @@ $(PLATFORM_CONFIG_FILE): boards/$(BOARD).py scripts/build_platform_config.py
 # Generation of temporary files and setting of wrappersources is already done this moment
 ifndef NO_COMPILE
 
-compile=$(CC) $(CFLAGS) $< -o $@
+compile=$(CC) $< -o $@ $(CFLAGS)
 
 link=$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
@@ -737,6 +738,8 @@ else ifdef ESP32
 include make/targets/ESP32.make
 else ifdef ESP8266
 include make/targets/ESP8266.make
+else ifdef RISCV
+include make/targets/RISCV.make
 else # ARM/etc, so generate bin, etc ---------------------------
 include make/targets/ARM.make
 endif	    # ---------------------------------------------------
