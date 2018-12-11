@@ -1,28 +1,40 @@
+/*
+ * This file is part of Espruino, a JavaScript interpreter for Microcontrollers
+ *
+ * Copyright (C) 2013 Gordon Williams <gw@pur3.co.uk>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * ----------------------------------------------------------------------------
+ * Platform Specific entry point
+ * ----------------------------------------------------------------------------
+ */
+
 #include <stdint.h>
+#include <math.h>
+#include "platform.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "platform.h"
+#include "encoding.h"
+#include <unistd.h>
+#include "stdatomic.h"
+#include "uart.h"
+
 #include "platform_config.h"
-
-#include "jslex.h"
-#include "jsvar.h"
-#include "jsparse.h"
-#include "jswrap_json.h"
-
 #include "jsinteractive.h"
 #include "jshardware.h"
-#include "jswrapper.h"
 
-int main(void)
+
+int main (void)
 {
+	_config_hifive_uart();
+	
 	jshInit();
 	jsvInit(0);
 	jsiInit(true);
 
-	while (1) {
-   		jsiLoop();
-  	}
-
-	return 0;
+	while(1);
 }
