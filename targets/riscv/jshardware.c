@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "plic/plic_driver.h"
+#include "encoding.h"
+
 #include "platform.h"
 #include "platform_config.h"
 #include "uart.h"
@@ -11,16 +14,25 @@
 #include "jsparse.h"
 #include "jsinteractive.h"
 
+plic_instance_t g_plic;
+
 static void NOP(const char * func)
 {
-	_puts(func);
-	_puts(" Not implemented\r\n");
+	/*_puts(func);
+	_puts(" Not implemented\r\n");*/
 }
 
 void jshInit() 
 {
-	_config_hifive_uart();
-	_puts("Hello world\r\n");
+	_puts("Serial ok\r\n");
+
+	/* initialize irqs */
+	PLIC_init(&g_plic,
+	    PLIC_CTRL_ADDR,
+	    PLIC_NUM_INTERRUPTS,
+	    PLIC_NUM_PRIORITIES);
+
+	_puts("PLIC Initialized\r\n");
 }
 
 void jshReset()
@@ -104,12 +116,17 @@ size_t jshFlashGetMemMapAddress(size_t ptr)
 
 void jshInterruptOff() 
 {
-	NOP(__func__);
+	/*NOP(__func__);*/
+	clear_csr(mie, MIP_MEIP);
+  	clear_csr(mie, MIP_MTIP);
 }
 
 void jshInterruptOn() 
 {
-	NOP(__func__);
+	/*NOP(__func__);*/
+	set_csr(mie, MIP_MEIP);
+	set_csr(mie, MIP_MTIP);
+	set_csr(mstatus, MSTATUS_MIE);
 }
 
 bool jshIsInInterrupt()
@@ -314,4 +331,13 @@ void jshI2CRead(IOEventFlags device, unsigned char address, int nBytes, unsigned
 void jshReboot() 
 {
 	NOP(__func__);
+}
+
+void jshDebug(int i1, int i2, int i3)
+{
+	/* this debug function appear to be reseting our core */
+	char str[120];
+	
+	sprintf(str, "DEBUG::%d::%d::%d\r\n", i1, i2, i3);
+	_puts(str);
 }

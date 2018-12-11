@@ -447,4 +447,6 @@ void jshVirtualPinSetState(Pin pin, JshPinState state);
     if (timeout<=0 || jspIsInterrupted()) { jsExceptionHere(JSET_INTERNALERROR, "Timeout on "REASON); }  \
 }
 
+void jshDebug(int i1, int i2, int i3);
+
 #endif /* JSHARDWARE_H_ */
