@@ -702,7 +702,7 @@ $(PLATFORM_CONFIG_FILE): boards/$(BOARD).py scripts/build_platform_config.py
 # Generation of temporary files and setting of wrappersources is already done this moment
 ifndef NO_COMPILE
 
-compile=$(CC) $< -o $@ $(CFLAGS)
+compile=$(CC) -o $@ $(CFLAGS) $<
 
 link=$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
@@ -758,6 +758,7 @@ clean:
 	$(Q)rm -f $(ROOT)/gen/*.c $(ROOT)/gen/*.h $(ROOT)/gen/*.ld
 	$(Q)rm -f $(ROOT)/scripts/*.pyc $(ROOT)/boards/*.pyc
 	$(Q)rm -f $(PROJ_NAME).elf
+	$(Q)rm -f espruino*.elf
 	$(Q)rm -f $(PROJ_NAME).hex
 	$(Q)rm -f $(PROJ_NAME).bin
 	$(Q)rm -f $(PROJ_NAME).srec
