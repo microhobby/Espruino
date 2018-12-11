@@ -117,21 +117,28 @@ size_t jshFlashGetMemMapAddress(size_t ptr)
 void jshInterruptOff() 
 {
 	/*NOP(__func__);*/
+	/* clear machine irq */
 	clear_csr(mie, MIP_MEIP);
-  	clear_csr(mie, MIP_MTIP);
+	/* clear time irq */
+  	/*clear_csr(mie, MIP_MTIP);*/
+	/* clear general */
+	/*clear_csr(mstatus, MSTATUS_MIE);*/
 }
 
 void jshInterruptOn() 
 {
 	/*NOP(__func__);*/
+	/* enable machine irq */
 	set_csr(mie, MIP_MEIP);
-	set_csr(mie, MIP_MTIP);
-	set_csr(mstatus, MSTATUS_MIE);
+	/*set_csr(mie, MIP_MTIP);*/
+	/* enable general */
+	/*set_csr(mstatus, MSTATUS_MIE);*/
 }
 
+/// Are we currently in an interrupt?
 bool jshIsInInterrupt()
 {
-	return false;
+	return false; //FIXME
 }
 
 bool jshPinGetValue(Pin pin) 
