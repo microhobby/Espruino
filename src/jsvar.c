@@ -268,6 +268,9 @@ void jsvInit(unsigned int size) {
   assert(size==0);
 #endif
 
+  jsVarsSize = JSVAR_CACHE_SIZE;
+  jshDebug(size, jsVarsSize, 0);
+
   jsVarFirstEmpty = jsvInitJsVars(1/*first*/, jsVarsSize);
   jsvSoftInit();
 }
