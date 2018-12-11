@@ -1,3 +1,7 @@
+
+#ifndef UART_APP_H
+#define UART_APP_H
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,3 +13,6 @@
 extern void _config_hifive_uart(void);
 extern void _putc(char c);
 extern void _puts(const char * s);
+extern int _getc(char * c);
+
+#endif
