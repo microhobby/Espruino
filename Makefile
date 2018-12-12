@@ -353,6 +353,8 @@ ifeq ($(FAMILY),ESP8266)
 # special ESP8266 maths lib that doesn't go into RAM
 LIBS += -lmirom
 LDFLAGS += -L$(ROOT)/targets/esp8266
+else ifeq ($(FAMILY),RISCV)
+#do nothing here
 else
 # everything else uses normal maths lib
 LIBS += -lm
@@ -600,7 +602,7 @@ PININFOFILE=$(GENDIR)/jspininfo
 SOURCES += $(PININFOFILE).c
 
 SOURCES += $(WRAPPERSOURCES) $(TARGETSOURCES)
-SOURCEOBJS = $(SOURCES:.c=.o) $(CPPSOURCES:.cpp=.o)
+SOURCEOBJS = $(ASMSOURCES:.S=.o) $(SOURCES:.c=.o) $(CPPSOURCES:.cpp=.o)
 OBJS = $(SOURCEOBJS) $(PRECOMPILED_OBJS)
 
 
@@ -620,6 +622,8 @@ else ifdef STM32
 else ifdef EFM32
  LDFLAGS += $(OPTIMIZEFLAGS) $(ARCHFLAGS)
  LDFLAGS += -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
+else ifdef RISCV
+ LIBS += -Wl,--start-group -lm -lc -lgcc -lnosys -Wl,--end-group
 else
  LDFLAGS += $(OPTIMIZEFLAGS) $(ARCHFLAGS)
 endif
@@ -702,7 +706,8 @@ $(PLATFORM_CONFIG_FILE): boards/$(BOARD).py scripts/build_platform_config.py
 # Generation of temporary files and setting of wrappersources is already done this moment
 ifndef NO_COMPILE
 
-compile=$(CC) -o $@ $(CFLAGS) $<
+compile=$(CC) $(CFLAGS) -include sys/cdefs.h -c -o $@ $<
+compileasm=$(CC) $(CFLAGS) -c -o $@ $<
 
 link=$(LD) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
@@ -714,6 +719,10 @@ quiet_compile= CC $@
 quiet_link= LD $@
 quiet_obj_dump= GEN $(PROJ_NAME).lst
 quiet_obj_to_bin= GEN $(PROJ_NAME).$2
+
+%.o: %.S $(PLATFORM_CONFIG_FILE) $(PININFOFILE).h
+	@echo $($(quiet_)compile)
+	@$(call compileasm)
 
 %.o: %.c $(PLATFORM_CONFIG_FILE) $(PININFOFILE).h
 	@echo $($(quiet_)compile)
