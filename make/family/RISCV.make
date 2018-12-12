@@ -49,6 +49,7 @@ targetlibs/fe300/libwrap/sys/_exit.c	\
 targetlibs/fe300/libwrap/sys/puts.c	\
 targetlibs/fe300/libwrap/misc/write_hex.c	\
 targets/riscv/irq.c			\
+targets/riscv/gpio.c			\
 targets/riscv/uart.c			\
 targets/riscv/main.c                    \
 targets/riscv/jshardware.c

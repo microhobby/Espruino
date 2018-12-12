@@ -6,6 +6,7 @@
 #include "platform.h"
 #include "platform_config.h"
 #include "irq.h"
+#include "gpio.h"
 #include "uart.h"
 #include "jshardware.h"
 #include "jsutils.h"
@@ -73,7 +74,7 @@ int jshGetSerialNumber(unsigned char *data, int maxChars)
 bool jshIsUSBSERIALConnected()
 {
 	NOP(__func__);
-	return false;
+	return true;
 }
 
 JsSysTime jshGetSystemTime()
@@ -126,13 +127,11 @@ size_t jshFlashGetMemMapAddress(size_t ptr)
 
 void jshInterruptOff() 
 {
-	/*NOP(__func__);*/
 	lock_irqs();
 }
 
 void jshInterruptOn() 
 {
-	/*NOP(__func__);*/
 	enable_irqs();
 }
 
@@ -144,22 +143,36 @@ bool jshIsInInterrupt()
 
 bool jshPinGetValue(Pin pin) 
 {
+	if(gpio_read_level(pin) == 1)
+		return true;
 	return false;
 }
 
 void jshPinSetState(Pin pin, JshPinState state)
 {
-	NOP(__func__);
+	if(state == JSHPINSTATE_GPIO_OUT)
+		gpio_output(pin);
+	else if(state == JSHPINSTATE_GPIO_IN)
+		gpio_input(pin);
 }
 
 JshPinState jshPinGetState(Pin pin) 
 {
+	unsigned int mux = gpio_read_mux(pin);
+
+	if (mux == 1)
+		return JSHPINSTATE_GPIO_IN | 
+			(jshPinGetValue(pin) ? JSHPINSTATE_PIN_IS_ON : 0);
+	if (mux == 2)
+		return JSHPINSTATE_GPIO_OUT | 
+			(jshPinGetValue(pin) ? JSHPINSTATE_PIN_IS_ON : 0);
+
 	return JSHPINSTATE_UNDEFINED;
 }
 
 void jshPinSetValue(Pin pin, bool value) 
 {
-	NOP(__func__);
+	gpio_level(pin, value ? 1 : 0);
 }
 
 void jshUSARTKick(IOEventFlags device) 
