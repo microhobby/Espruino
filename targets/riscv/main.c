@@ -21,6 +21,7 @@
 #include "encoding.h"
 #include <unistd.h>
 #include "stdatomic.h"
+#include "irq.h"
 #include "uart.h"
 
 #include "platform_config.h"
@@ -30,11 +31,10 @@
 
 int main (void)
 {
-	_config_hifive_uart();
-	
 	jshInit();
 	jsvInit(0);
 	jsiInit(true);
 
-	while(1);
+	while(1)
+		jsiLoop();
 }
