@@ -1,0 +1,6 @@
+#!/bin/bash
+
+make clean
+make BOARD=HIFIVE1 2> build.log
+
+./scripts/hifive/flash $1
