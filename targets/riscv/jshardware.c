@@ -3,36 +3,45 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "plic/plic_driver.h"
-#include "encoding.h"
-
 #include "platform.h"
 #include "platform_config.h"
+#include "irq.h"
 #include "uart.h"
 #include "jshardware.h"
 #include "jsutils.h"
 #include "jsparse.h"
 #include "jsinteractive.h"
 
-plic_instance_t g_plic;
-
 static void NOP(const char * func)
 {
-	/*_puts(func);
-	_puts(" Not implemented\r\n");*/
+	/*UART_write(func, 1);
+	UART_write(" Not implemented\r\n", 1);*/
+}
+
+static void uart_irq_handle()
+{
+	char c;
+	uint32_t uart_ip_reg = UART0_REG(UART_REG_IP);
+	/* check the type of irq */
+	uart_ip_reg &= UART0_REG(UART_REG_IE);
+
+	if (uart_ip_reg & UART_IP_RXWM) {
+		UART_get_char(&c, 1);
+		/*UART_put_char(c, 1);*/
+		jshPushIOCharEvent(EV_USBSERIAL, c);
+		
+	}
 }
 
 void jshInit() 
 {
-	_puts("Serial ok\r\n");
-
 	/* initialize irqs */
-	PLIC_init(&g_plic,
-	    PLIC_CTRL_ADDR,
-	    PLIC_NUM_INTERRUPTS,
-	    PLIC_NUM_PRIORITIES);
+	init_plic();
 
-	_puts("PLIC Initialized\r\n");
+	UART_init(115200, 0);
+	UART_write("PLIC Initialized\r\n", 1);
+
+	UART_on_rx(uart_irq_handle);
 }
 
 void jshReset()
@@ -40,9 +49,10 @@ void jshReset()
 	NOP(__func__);
 }
 
+/* stuff to do in idle */
 void jshIdle() 
 {
-	NOP(__func__);
+	/* nothing here */
 }
 
 bool jshSleep(JsSysTime timeUntilWake)
@@ -117,22 +127,13 @@ size_t jshFlashGetMemMapAddress(size_t ptr)
 void jshInterruptOff() 
 {
 	/*NOP(__func__);*/
-	/* clear machine irq */
-	clear_csr(mie, MIP_MEIP);
-	/* clear time irq */
-  	/*clear_csr(mie, MIP_MTIP);*/
-	/* clear general */
-	/*clear_csr(mstatus, MSTATUS_MIE);*/
+	lock_irqs();
 }
 
 void jshInterruptOn() 
 {
 	/*NOP(__func__);*/
-	/* enable machine irq */
-	set_csr(mie, MIP_MEIP);
-	/*set_csr(mie, MIP_MTIP);*/
-	/* enable general */
-	/*set_csr(mstatus, MSTATUS_MIE);*/
+	enable_irqs();
 }
 
 /// Are we currently in an interrupt?
@@ -170,7 +171,7 @@ void jshUSARTKick(IOEventFlags device)
 	int c = jshGetCharToTransmit(device);
 
 	while (c >= 0) {
-		_putc(c);
+		UART_put_char(c, 1);
 		c = jshGetCharToTransmit(device);
 	}
 }
@@ -346,5 +347,5 @@ void jshDebug(int i1, int i2, int i3)
 	char str[120];
 	
 	sprintf(str, "DEBUG::%d::%d::%d\r\n", i1, i2, i3);
-	_puts(str);
+	UART_write(str, 1);
 }
