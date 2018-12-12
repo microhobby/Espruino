@@ -829,7 +829,7 @@ void jsiSemiInit(bool autoLoad) {
           "         |_| espruino.com\n"
           " "JS_VERSION" (c) 2018 G.Williams\n"
 #ifdef HIFIVE1
-	 " HIFIVE1 BOARD PORT (C) 2018 Matheus Castello\n"
+	 " HIFIVE1 BOARD PORT (c) 2018 Matheus Castello\n"
 #endif
         // Point out about donations - but don't bug people
         // who bought boards that helped Espruino
