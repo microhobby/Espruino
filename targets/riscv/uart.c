@@ -197,4 +197,5 @@ void UART_on_rx(function_ptr_t callback)
 	PLIC_set_priority(&g_plic, INT_UART0_BASE, 1);
 
 	enable_irqs();
+	enable_general();
 }
