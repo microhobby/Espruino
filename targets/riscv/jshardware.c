@@ -77,37 +77,41 @@ bool jshIsUSBSERIALConnected()
 	return true;
 }
 
+/* https://miro.medium.com/max/754/1*snTXFElFuQLSFDnvZKJ6IA.png */
+volatile JsSysTime baseSystemTime = 0;
+volatile uint32_t lastSystemTime = 0;
+
 JsSysTime jshGetSystemTime()
 {
-	NOP(__func__);
-	return 0;
+	volatile uint64_t * mtime = (uint64_t*) (CLINT_CTRL_ADDR + CLINT_MTIME);
+	uint64_t now = *mtime;
+	return baseSystemTime + (JsSysTime)now;
 }
 
 void jshSetSystemTime(JsSysTime time)
 {
-	NOP(__func__);
+	baseSystemTime = 0;
+	baseSystemTime = time - jshGetSystemTime();
 }
 
 JsSysTime jshGetTimeFromMilliseconds(JsVarFloat ms)
 {
-	NOP(__func__);
-	return 0;
+	return (JsSysTime) ((ms * RTC_FREQ) / 1000);
 }
 
 JsVarFloat jshGetMillisecondsFromTime(JsSysTime time)
 {
-	NOP(__func__);
-	return 0;
+	return (time * 1000.0) / RTC_FREQ;
 }
 
 void jshFlashRead(void *buf, uint32_t addr, uint32_t len)
 {
-	NOP(__func__);
+	/*NOP(__func__);*/
 }
 
 void jshFlashWrite(void *buf, uint32_t addr, uint32_t len) 
 {
-	NOP(__func__);
+	/*NOP(__func__);*/
 }
 
 bool jshFlashGetPage(uint32_t addr, uint32_t *startAddr, uint32_t *pageSize) 
@@ -117,7 +121,7 @@ bool jshFlashGetPage(uint32_t addr, uint32_t *startAddr, uint32_t *pageSize)
 
 void jshFlashErasePage(uint32_t addr)
 {
-	NOP(__func__);
+	/*NOP(__func__);*/
 }
 
 size_t jshFlashGetMemMapAddress(size_t ptr)
@@ -251,7 +255,10 @@ JshPinFunction jshGetCurrentPinFunction(Pin pin)
 
 void jshDelayMicroseconds(int microsec)
 {
-	NOP(__func__);
+	volatile uint64_t * mtime = (uint64_t*) (CLINT_CTRL_ADDR + CLINT_MTIME);
+	uint64_t now = *mtime;
+	uint64_t then = now + (microsec * RTC_FREQ / 10000);
+	while (*mtime < then);
 }
 
 int jshSPISend(IOEventFlags device, int data) 
