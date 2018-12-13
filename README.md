@@ -85,6 +85,11 @@ You can download binaries from http://www.espruino.com/Download (these aren't th
 
 If you are a board manufacturer interested in getting your board officially supported, please [Contact Us](http://www.espruino.com/Contact+Us).
 
+* [SiFive HiFive](https://www.sifive.com/boards/hifive1) - basic support.
+	* To be implemented:
+		* PWM
+		* I2C
+		* GPIO IRQs "pin watch"
 * [Original Espruino Board](http://www.espruino.com/EspruinoBoard) - great support.
 * [Espruino Pico Board](http://www.espruino.com/Pico) - great support.
 * [Puck.js](http://www.espruino.com/Puck.js) - great support.
