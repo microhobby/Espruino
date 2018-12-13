@@ -155,7 +155,10 @@ JsVar *jsnCallFunction(void *function, JsnArgumentType argumentSpecifier, JsVar 
         argData[argCount++] = (size_t)((i>>32) & 0xFFFFFFFF);
       }
  #else // no reordering
-      if (argCount&1) argCount++;
+      //FIXME
+	//TODO
+	/* I have no idea why, but this corrupt the floats in RISC-V */
+      /*if (argCount&1) argCount++;*/
       argData[argCount++] = (size_t)((i) & 0xFFFFFFFF);
       argData[argCount++] = (size_t)((i>>32) & 0xFFFFFFFF);
  #endif
