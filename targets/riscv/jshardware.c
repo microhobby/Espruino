@@ -29,8 +29,7 @@ static void uart_irq_handle()
 	if (uart_ip_reg & UART_IP_RXWM) {
 		UART_get_char(&c, 1);
 		/*UART_put_char(c, 1);*/
-		jshPushIOCharEvent(EV_USBSERIAL, c);
-		
+		jshPushIOCharEvent(EV_SERIAL1, c);
 	}
 }
 
@@ -53,12 +52,14 @@ void jshReset()
 /* stuff to do in idle */
 void jshIdle() 
 {
-	/* nothing here */
+	jshUSARTKick(EV_SERIAL1);
 }
 
 bool jshSleep(JsSysTime timeUntilWake)
 {
-	NOP(__func__);
+	//FIXME
+	/* not really implemented */
+	return true;
 }
 
 void jshKill()
@@ -74,7 +75,7 @@ int jshGetSerialNumber(unsigned char *data, int maxChars)
 bool jshIsUSBSERIALConnected()
 {
 	NOP(__func__);
-	return true;
+	return false;
 }
 
 /* https://miro.medium.com/max/754/1*snTXFElFuQLSFDnvZKJ6IA.png */
@@ -195,7 +196,9 @@ void jshUSARTKick(IOEventFlags device)
 
 bool jshIsDeviceInitialised(IOEventFlags device)
 {
-	return false;
+	//FIXME
+	/* not really implemented */
+	return true;
 }
 
 void jshUSARTSetup(IOEventFlags device, JshUSARTInfo *inf) 
@@ -303,7 +306,7 @@ unsigned int jshSetSystemClock(JsVar *options)
 
 unsigned int jshGetRandomNumber() 
 {
-	return 0;
+	return rand();
 }
 
 JsVarFloat jshPinAnalog(Pin pin) 
