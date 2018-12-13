@@ -16,7 +16,7 @@
 import pinutils;
 info = {
  'name' : "HiFive1",
- 'default_console' : "EV_USBSERIAL",
+ 'default_console' : "EV_SERIAL1",
  'variables' :  300,
  'binary_name' : 'espruino_%v_hifive',
  'build' : {
@@ -25,7 +25,7 @@ info = {
    ],
    'makefile' : [
      'RISCV=1',
-     'DEFINES += -DHIFIVE1',
+     'DEFINES += -DHIFIVE1 -DEMBEDDED',
    ]
  }
 };
