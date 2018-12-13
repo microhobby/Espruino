@@ -197,7 +197,7 @@ JsVar *jsnCallFunction(void *function, JsnArgumentType argumentSpecifier, JsVar 
       result = *(uint64_t*)&f;
     } else
 #endif
-    {
+    {   
       if (JSWAT_IS_64BIT(returnType)) {
 #ifdef USE_FLOAT_RETURN_FIX
         assert(returnType==JSWAT_JSVARFLOAT);
@@ -257,6 +257,7 @@ JsVar *jsnCallFunction(void *function, JsnArgumentType argumentSpecifier, JsVar 
 // -----------------------------------------------------------------------------------------
 
 JsVarFloat sanity_pi() { return 3.141592; }
+int32_t sanity_flt(JsVarFloat a) { return (int32_t) a; }
 int32_t sanity_int_pass(int32_t hello) { return (hello*10)+5; }
 int32_t sanity_int_flt_int(int32_t a, JsVarFloat b, int32_t c) {
   return a + (int32_t)(b*100) + c*10000;
@@ -273,6 +274,10 @@ void jsnSanityTest() {
   JsVar *args[4];
   if (jsvGetFloatAndUnLock(jsnCallFunction(sanity_pi, JSWAT_JSVARFLOAT, 0, 0, 0)) != 3.141592)
     jsiConsolePrint("WARNING: jsnative.c sanity check failed (returning double values)\n");
+
+  args[0] = jsvNewFromFloat(42);
+  if (jsvGetIntegerAndUnLock(jsnCallFunction(sanity_flt, JSWAT_INT32|(JSWAT_JSVARFLOAT<<(JSWAT_BITS)), 0, args, 1)) != 42)
+	jsiConsolePrint("WARNING: jsnative.c sanity check failed (simple float passing)\n");
 
   args[0] = jsvNewFromInteger(1234);
   if (jsvGetIntegerAndUnLock(jsnCallFunction(sanity_int_pass, JSWAT_INT32|(JSWAT_INT32<<JSWAT_BITS), 0, args, 1)) != 12345)
