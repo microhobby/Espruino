@@ -24,16 +24,32 @@
 #include "irq.h"
 #include "uart.h"
 
-#include "platform_config.h"
+#include "jslex.h"
+#include "jsvar.h"
+#include "jsparse.h"
+#include "jswrap_json.h"
+
 #include "jsinteractive.h"
 #include "jshardware.h"
+#include "jswrapper.h"
 
+void addNativeFunction(const char *name, void (*callbackPtr)(void)) {
+  jsvObjectSetChildAndUnLock(execInfo.root, name, jsvNewNativeFunction(callbackPtr, JSWAT_VOID));
+}
+
+static void clearScreen()
+{
+	jsiConsolePrint("\033[2J");
+	jsiConsolePrint("\033[H");
+}
 
 int main (void)
 {
 	jshInit();
 	jsvInit(0);
 	jsiInit(true);
+
+	addNativeFunction("clear", clearScreen);
 
 	while(1)
 		jsiLoop();
