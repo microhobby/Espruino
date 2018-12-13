@@ -623,7 +623,7 @@ else ifdef EFM32
  LDFLAGS += $(OPTIMIZEFLAGS) $(ARCHFLAGS)
  LDFLAGS += -Wl,--start-group -lgcc -lc -lnosys -Wl,--end-group
 else ifdef RISCV
- LIBS += -Wl,--start-group -lm -lc -lgcc -lnosys -Wl,--end-group
+ LIBS += -Wl,--start-group -lm -lc -lnosys -Wl,--end-group
 else
  LDFLAGS += $(OPTIMIZEFLAGS) $(ARCHFLAGS)
 endif
