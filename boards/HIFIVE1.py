@@ -47,5 +47,5 @@ devices = {
 };
 
 def get_pins():
-	pins = pinutils.generate_pins(0,31)
+	pins = pinutils.generate_pins(0,19)
 	return pins
