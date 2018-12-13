@@ -16,6 +16,7 @@ function_ptr_t g_ext_interrupt_handlers[PLIC_NUM_INTERRUPTS];
 
 void init_plic();
 void lock_irqs();
+void enable_general();
 void enable_irqs();
 
 #endif

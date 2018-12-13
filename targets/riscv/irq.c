@@ -41,9 +41,15 @@ void lock_irqs()
 	/* clear machine irq */
 	clear_csr(mie, MIP_MEIP);
 	/* clear time irq */
-  	/*clear_csr(mie, MIP_MTIP);*/
+  	clear_csr(mie, MIP_MTIP);
 	/* clear general */
 	/*clear_csr(mstatus, MSTATUS_MIE);*/
+}
+
+void enable_general()
+{
+	/* enable general */
+	set_csr(mstatus, MSTATUS_MIE);
 }
 
 void enable_irqs()
@@ -52,6 +58,4 @@ void enable_irqs()
 	set_csr(mie, MIP_MEIP);
 	/* enable time irq */
 	set_csr(mie, MIP_MTIP);
-	/* enable general */
-	set_csr(mstatus, MSTATUS_MIE);
 }
