@@ -44,6 +44,9 @@ chip = {
 };
 
 devices = {
+	'LED1' : { 'pin' : 'D6' },
+	'LED2' : { 'pin' : 'D3' },
+	'LED3' : { 'pin' : 'D5' },
 };
 
 def get_pins():
