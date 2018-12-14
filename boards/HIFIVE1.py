@@ -34,7 +34,7 @@ chip = {
   'family' : "RISCV",
   'package' : "",
   'ram' : 16,
-  'flash' : 128, # size of file used to fake flash memory (kb)
+  'flash' : 128000, # size in (kb)
   'speed' : -1,
   'usart' : 1,
   'spi' : 1,
@@ -44,9 +44,9 @@ chip = {
 };
 
 devices = {
-	'LED1' : { 'pin' : 'D6' },
-	'LED2' : { 'pin' : 'D3' },
-	'LED3' : { 'pin' : 'D5' },
+	'LED1' : { 'pin' : 'D6' }, # red
+	'LED2' : { 'pin' : 'D3' }, # green
+	'LED3' : { 'pin' : 'D5' }, # blue
 };
 
 def get_pins():
