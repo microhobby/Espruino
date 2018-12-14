@@ -37,16 +37,30 @@ void jshInit()
 {
 	/* initialize irqs */
 	init_plic();
-
 	UART_init(115200, 0);
 	UART_write("PLIC Initialized\r\n", 1);
 
+	/* add rx irq callback */
 	UART_on_rx(uart_irq_handle);
+
+	/* set all Pins to output low */
+	jshReset();
 }
 
 void jshReset()
 {
-	NOP(__func__);
+	unsigned int i;
+	for(i = 0; i < 19; i++) {
+		if (i != 16 && i != 17) {
+			jshPinSetState(i, JSHPINSTATE_GPIO_OUT);
+			jshPinSetValue(i, false);
+		}
+	}
+
+	/* set onboard led to high */
+	jshPinSetValue(6, true);
+	jshPinSetValue(3, true);
+	jshPinSetValue(5, true);
 }
 
 /* stuff to do in idle */
