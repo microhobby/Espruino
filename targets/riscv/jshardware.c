@@ -61,6 +61,9 @@ void jshReset()
 	jshPinSetValue(6, true);
 	jshPinSetValue(3, true);
 	jshPinSetValue(5, true);
+
+	/* flag to load native functions again */
+	jshReseted = true;
 }
 
 /* stuff to do in idle */

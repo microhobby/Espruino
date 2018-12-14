@@ -49,8 +49,13 @@ int main (void)
 	jsvInit(0);
 	jsiInit(true);
 
-	addNativeFunction("clear", clearScreen);
+	while(1) {
 
-	while(1)
+		if (jshReseted) {
+			addNativeFunction("clear", clearScreen);
+			jshReseted = false;
+		}
+
 		jsiLoop();
+	}
 }
