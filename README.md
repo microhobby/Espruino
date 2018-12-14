@@ -90,6 +90,7 @@ If you are a board manufacturer interested in getting your board officially supp
 		* PWM
 		* I2C
 		* GPIO IRQs "pin watch"
+		* SPI Flash Driver
 * [Original Espruino Board](http://www.espruino.com/EspruinoBoard) - great support.
 * [Espruino Pico Board](http://www.espruino.com/Pico) - great support.
 * [Puck.js](http://www.espruino.com/Puck.js) - great support.
