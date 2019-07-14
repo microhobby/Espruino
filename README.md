@@ -77,7 +77,7 @@ There are a bunch of tests in the `tests` directory. See [`tests/README.md`](tes
 Current State
 -------------
 
-The officially supported boards are the [Original Espruino Board](http://www.espruino.com/EspruinoBoard) and the  [Espruino Pico Board](http://www.espruino.com/Pico). The [Web IDE](http://www.espruino.com/webide) is able to automatically download and flash the latest version of Espruino for you.
+The [officially supported boards](http://www.espruino.com/Order) are the best supported. They come pre-installed with Espruino and you are able to easily download and flash the latest versions of Espruino to them.
 
 While Espruino can run on other boards, we make no money from them and so cannot afford to test, fix or support the firmware on them. We're dependent on the community.
 
@@ -116,6 +116,22 @@ If you are a board manufacturer interested in getting your board officially supp
 * ST NUCLEO-F411RE - WORKING
 * ESP8266 - WORKING - Reasonably stable, but expect to find issues
 * Arduino (AVR) - NOT POSSIBLE due to the Hardward architecture of AVRs, even though it would fit into an ATMEGA2560. If `avr-gcc` ever gains an easy way to emulate Von Neumann architecture then it might be portable, but for now it isn't.
+You can download binaries from http://www.espruino.com/Download
+
+If you are a board manufacturer interested in getting your board officially supported, please [check out this page](http://www.espruino.com/Business).
+
+For a list of supported boards, please see the [boards folder](https://github.com/espruino/Espruino/tree/master/boards).
+
+Main supported platforms are:
+
+* STM32 (F1, F3, F4, L4)
+* nRF52
+* nRF51
+* ESP8266
+* ESP32
+* Linux
+
+Espruino has been ported to other boards and platforms (such as EFM32 and SAMD), but these have a habit of being contributed and then never maintained. All boards that this has happened to reside in the [UNMAINTAINED_BOARDS](https://github.com/espruino/Espruino/tree/UNMAINTAINED_BOARDS) branch.
 
 
 Modification

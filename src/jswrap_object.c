@@ -142,6 +142,7 @@ JsVar *jswrap_object_toString(JsVar *parent, JsVar *arg0) {
 Copy this object completely
  */
 JsVar *jswrap_object_clone(JsVar *parent) {
+  if (!parent) return 0;
   return jsvCopy(parent, true);
 }
 
@@ -871,8 +872,8 @@ This replaces the function with the one in the argument - while keeping the old 
 This allows inner functions to be edited, and is used when edit() is called on an inner function.
  */
 void jswrap_function_replaceWith(JsVar *oldFunc, JsVar *newFunc) {
-  if (!jsvIsFunction(newFunc)) {
-    jsExceptionHere(JSET_TYPEERROR, "First argument of replaceWith should be a function - ignoring");
+  if ((!jsvIsFunction(oldFunc)) || (!jsvIsFunction(newFunc))) {
+    jsExceptionHere(JSET_TYPEERROR, "Argument should be a function");
     return;
   }
   // If old was native or vice versa...
@@ -895,9 +896,6 @@ void jswrap_function_replaceWith(JsVar *oldFunc, JsVar *newFunc) {
   JsVar *prototype = jsvFindChildFromString(oldFunc, JSPARSE_PROTOTYPE_VAR, false);
   // so now remove all existing entries
   jsvRemoveAllChildren(oldFunc);
-  // now re-add scope
-  if (scope) jsvAddName(oldFunc, scope);
-  jsvUnLock(scope);
   // now re-add other entries
   JsvObjectIterator it;
   jsvObjectIteratorNew(&it, newFunc);
@@ -915,6 +913,9 @@ void jswrap_function_replaceWith(JsVar *oldFunc, JsVar *newFunc) {
     jsvUnLock(el);
   }
   jsvObjectIteratorFree(&it);
+  // now re-add scope
+  if (scope) jsvAddName(oldFunc, scope);
+  jsvUnLock(scope);
   // re-add prototype (it needs to come after other hidden vars)
   if (prototype) jsvAddName(oldFunc, prototype);
   jsvUnLock(prototype);
