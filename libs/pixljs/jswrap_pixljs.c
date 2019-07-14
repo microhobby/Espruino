@@ -74,9 +74,7 @@ var boolean = false;
 var number = 50;
 // First menu
 var mainmenu = {
-  "" : {
-    "title" : "-- Main Menu --"
-  },
+  "" : { "title" : "-- Main Menu --" },
   "Backlight On" : function() { LED1.set(); },
   "Backlight Off" : function() { LED1.reset(); },
   "Submenu" : function() { Pixl.menu(submenu); },
@@ -89,14 +87,12 @@ var mainmenu = {
     value : number,
     min:0,max:100,step:10,
     onchange : v => { number=v; }
-  }
+  },
   "Exit" : function() { Pixl.menu(); },
 };
 // Submenu
 var submenu = {
-  "" : {
-    "title" : "-- SubMenu --"
-  },
+  "" : { "title" : "-- SubMenu --" },
   "One" : undefined, // do nothing
   "Two" : undefined, // do nothing
   "< Back" : function() { Pixl.menu(mainmenu); },
@@ -440,13 +436,13 @@ static bool pixl_selfTest() {
     jsiConsolePrintf("Have events - no BLE test\n");
   } else {
     uint32_t err_code;
-    err_code = jsble_set_scanning(true);
+    err_code = jsble_set_scanning(true, false);
     jsble_check_error(err_code);
     int timeout = 20;
     while (timeout-- && !jshHasEvents()) {
       nrf_delay_ms(100);
     }
-    err_code = jsble_set_scanning(false);
+    err_code = jsble_set_scanning(false, false);
     jsble_check_error(err_code);
     if (!jshHasEvents()) {
       jsiConsolePrintf("No BLE adverts found in 2s\n");
