@@ -13,6 +13,7 @@ CFLAGS += -mcmodel=medany
 LDFLAGS += -march=rv32imac -mabi=ilp32 -mcmodel=medany
 LDFLAGS += -T targetlibs/fe300/env/freedom-e300-hifive1/flash.lds -nostartfiles
 LDFLAGS += -Ltargetlibs/fe300/env --specs=nano.specs
+LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=_$(s))
 DEFINES += -DUSE_PLIC -DUSE_M_TIME
 INCLUDE += -I$(ROOT)/targets/riscv
 INCLUDE += -I$(ROOT)/targetlibs/fe300/drivers
@@ -23,6 +24,11 @@ INCLUDE += -I$(ROOT)/targetlibs/fe300/env/freedom-e300-hifive1
 ASMSOURCES += \
 	targetlibs/fe300/env/start.S \
 	targetlibs/fe300/env/entry.S
+
+LIBWRAP_SYMS := malloc free \
+	open lseek read write fstat stat close link unlink \
+	execve fork getpid kill wait \
+	isatty times sbrk _exit puts
 
 SOURCES += \
 	targetlibs/fe300/drivers/plic/plic_driver.c \
