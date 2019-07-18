@@ -1,8 +1,8 @@
 #!/bin/bash
 
-/media/castello/Linus/labs/riscv/freedom-e-sdk/work/build/openocd/prefix/bin/openocd \
+/media/castello/Linus/labs/riscv/freedom-e-sdk/work/build/openocd/bin/openocd \
 	-f /media/castello/Linus/labs/riscv/Espruino/targetlibs/fe300/env/freedom-e300-hifive1/openocd.cfg & \
-	/media/castello/Linus/labs/riscv/freedom-e-sdk/work/build/riscv-gnu-toolchain/riscv64-unknown-elf/prefix/bin/riscv64-unknown-elf-gdb /media/castello/Linus/labs/riscv/Espruino/$1 \
+	/media/castello/Linus/labs/riscv/freedom-e-sdk/work/build/riscv-gnu-toolchain/bin/riscv64-unknown-elf-gdb /media/castello/Linus/labs/riscv/Espruino/$1 \
 	--batch \
 	-ex "set remotetimeout 240" \
 	-ex "target extended-remote localhost:3333" \

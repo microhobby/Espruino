@@ -17,10 +17,10 @@ import pinutils;
 info = {
  'name' : "HiFive1",
  'default_console' : "EV_SERIAL1",
- 'variables' :  300,
+ 'variables' :  900,
  'binary_name' : 'espruino_%v_hifive',
  'build' : {
-   'optimizeflags' : '-O2',
+   'optimizeflags' : '-O2 -g',
    'libraries' : [
    ],
    'makefile' : [
